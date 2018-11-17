@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   format.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/28 10:00:02 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/17 11:36:47 by amoroziu         ###   ########.fr       */
+/*   Created: 2018/11/16 12:58:06 by amoroziu          #+#    #+#             */
+/*   Updated: 2018/11/16 15:25:08 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-void	ft_putnbr_fd(int n, int fd)
+#include <stdio.h>
+int		get_format(const char *format, int *i, t_format *arg_format)
 {
-	if (n == -2147483648)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putchar_fd('2', fd);
-		ft_putnbr_fd(147483648, fd);
-	}
-	else if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(-n, fd);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putchar_fd(n % 10 + '0', fd);
-	}
-	else
-		ft_putchar_fd(n + '0', fd);
+	arg_format->mfw = 0;
+	if (get_flags(format, i, arg_format))
+		return (1);
+	if (arg_format->mfw == 0)
+		if (get_mfw(format, i, arg_format))
+			return (1);
+	if (get_precision(format, i, arg_format))
+		return (1);
+	if (get_length(format, i, arg_format))
+		return (1);
+	if (get_convers(format, i, arg_format))
+		return (1);
+	return (0);
 }

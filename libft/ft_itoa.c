@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 
-static	int	get_size(int n)
+static	int	get_size(long long int n)
 {
 	int		size;
 
@@ -29,7 +29,7 @@ static	int	get_size(int n)
 	return (size);
 }
 
-char		*ft_itoa(int n)
+char		*ft_itoa(long long int n)
 {
 	int		i;
 	int		k;
