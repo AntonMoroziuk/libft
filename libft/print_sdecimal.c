@@ -25,46 +25,57 @@ static long long int	get_arg(t_format arg_format, va_list args)
 	return ((long long int)va_arg(args, int));
 }
 
-static int				check_sign(char *str, long long int nb,
+static void				check_sign(char **str, long long int nb,
 	t_format arg_format)
 {
 	char			*temp;
 
-	if (!arg_format.flags)
-		return (0);
-	if (ft_strchr(arg_format.flags, '#'))
-		return (1);
-	if (ft_strchr(arg_format.flags, ' '))
-	{
-		if (nb > 0)
+	if (arg_format.flags)
+	{	
+		if (ft_strchr(arg_format.flags, ' '))
 		{
-			temp = str;
-			str = ft_strjoin(" ", str);
-			ft_strdel(&temp);
+			if (nb > 0)
+			{
+				temp = *str;
+				*str = ft_strjoin(" ", *str);
+				ft_strdel(&temp);
+			}
+		}
+		if (ft_strchr(arg_format.flags, '+'))
+		{
+			if (nb > 0)
+			{
+				temp = *str;
+				*str = ft_strjoin("+", *str);
+				ft_strdel(&temp);
+			}
 		}
 	}
-	if (ft_strchr(arg_format.flags, '+'))
-	{
-		if (nb > 0)
-		{
-			temp = str;
-			str = ft_strjoin("+", str);
-			ft_strdel(&temp);
-		}
-	}
-	return (0);
 }
 
 static void				expand_str(char **str, char c, int add_to_left, int i)
 {
 	char	*temp;
 	char	*extra;
+	char	*sign;
 
 	extra = ft_strnew(i);
 	extra = ft_memset((void*)extra, c, i);
 	temp = *str;
 	if (add_to_left)
-		*str = ft_strjoin(extra, *str);
+	{
+		sign = ft_strsub(*str, 0, 1);
+		if (!ft_isdigit(sign[0]) && c == '0')
+		{
+			*str = ft_strjoin(extra, ft_strsub(*str, 1, ft_strlen(*str) - 1));
+			ft_strdel(&temp);
+			temp = *str;
+			*str = ft_strjoin(sign, *str);
+			ft_strdel(&temp);
+		}
+		else
+			*str = ft_strjoin(extra, *str);
+	}
 	else
 		*str = ft_strjoin(*str, extra);
 	ft_strdel(&temp);
@@ -74,8 +85,7 @@ static int				generate_str(long long int nb, t_format arg_format,
 	char **output)
 {
 	*output = ft_itoa(nb);
-	if (check_sign(*output, nb, arg_format))
-		return (1);
+	check_sign(output, nb, arg_format);
 	if (ft_strlen(*output) < (size_t)arg_format.precision)
 		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)

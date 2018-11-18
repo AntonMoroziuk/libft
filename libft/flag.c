@@ -35,6 +35,10 @@ int		get_flags(const char *format, int *i, t_format *arg_format)
 	j = 0;
 	while (is_flag(format[*i + j]))
 	{
+		if (j < 5)
+			arg_format->flags[j] = format[*i + j];
+		else
+			return (1);
 		if (format[*i + j] == '-' || format[*i + j] == '0')
 		{
 			if (get_mfw(format, i, arg_format))
@@ -42,15 +46,10 @@ int		get_flags(const char *format, int *i, t_format *arg_format)
 		}
 		j++;
 	}
-	if (j != 0)
-	{
-		if (!(arg_format->flags = ft_strsub(format, *i, j)))
-			return (1);
-		if (flag_repeats(arg_format->flags))
-			return (1);
-	}
-	else
+	if (j == 0)
 		arg_format->flags = NULL;
+	else if (flag_repeats(arg_format->flags))
+		return (1);
 	*i += j;
 	return (0);
 }
