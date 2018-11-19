@@ -22,14 +22,14 @@ int		new_line(char **files, int fd, char **line)
 		i++;
 	if (files[fd][i] == '\n')
 	{
-		MALLOCCHECK((*line = ft_strsub(files[fd], 0, i)));
+		MALLOCCHECK_INT((*line = ft_strsub(files[fd], 0, i)));
 		temp = files[fd];
-		MALLOCCHECK((files[fd] = ft_strdup(files[fd] + i + 1)));
+		MALLOCCHECK_INT((files[fd] = ft_strdup(files[fd] + i + 1)));
 		free(temp);
 	}
 	else
 	{
-		MALLOCCHECK((*line = ft_strdup(files[fd])));
+		MALLOCCHECK_INT((*line = ft_strdup(files[fd])));
 		ft_strdel(&(files[fd]));
 	}
 	return (1);
@@ -44,7 +44,7 @@ int		get_next_line(const int fd, char **line)
 
 	if (fd < 0 || line == NULL)
 		return (-1);
-	MALLOCCHECK((buff = (char*)malloc(sizeof(char) * (BUFF_SIZE + 1))));
+	MALLOCCHECK_INT((buff = (char*)malloc(sizeof(char) * (BUFF_SIZE + 1))));
 	while ((rs = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[rs] = '\0';

@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 11:49:49 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/16 12:18:39 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/19 15:07:03 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int		print_arg(t_format arg_format, va_list args, int *count)
 		return (print_sdecimal(arg_format, args, count));
 	//if (arg_format.conv == 'o')
 	//	return (print_uoctal(arg_format, args, count));
-	//if (arg_format.conv == 'u')
-	//	return (print_udecimal(arg_format, args, count));
+	if (arg_format.conv == 'u')
+		return (print_udecimal(arg_format, args, count));
 	//if (arg_format.conv == 'x' || arg_format.conv == 'X')
 	//	return (print_uhex(arg_format, args, count));
 	//if (arg_format.conv == 'f')

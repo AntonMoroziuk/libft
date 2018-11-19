@@ -25,22 +25,16 @@ static	int		pseudo_atoi(const char *str, int start)
 	return (res);
 }
 
-int				get_mfw(const char *format, int *i, t_format *arg_format)
+int				get_mfw(const char *format, int *i, int start,
+	t_format *arg_format)
 {
 	int		j;
-	int		delta;
 
 	j = 0;
-	delta = 0;
-	if (format[*i] == '-' || format[*i] == '0')
-	{
-		(*i)++;
-		delta = 1;
-	}
-	while (ft_isdigit(format[*i + j]))
+	while (ft_isdigit(format[start + j]))
 		j++;
-	arg_format->mfw = ft_max(pseudo_atoi(format, *i), arg_format->mfw);
-	(*i) += j - delta;
+	arg_format->mfw = ft_max(pseudo_atoi(format, start), arg_format->mfw);
+	(*i) += j;
 	return (0);
 }
 

@@ -80,7 +80,8 @@ SRC =	ft_bzero.c \
 		format.c \
 		length.c \
 		mfw.c \
-		print_sdecimal.c
+		print_sdecimal.c \
+		print_udecimal.c
 
 FLAGC = -Wall -Wextra -Werror
 

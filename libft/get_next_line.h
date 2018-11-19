@@ -18,7 +18,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft.h"
-# define MALLOCCHECK(x) if (!x) return (-1);
 
 int		get_next_line(const int fd, char **line);
 

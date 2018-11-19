@@ -12,6 +12,8 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
+# define MALLOCCHECK_INT(x) if (!x) return (-1);
+# define MALLOCCHECK_NULL(x) if (!x) return (NULL);
 # include <string.h>
 # include <stdarg.h>
 # include "get_next_line.h"
@@ -93,7 +95,8 @@ void			ft_lstpushback(t_list **lst, t_list *new);
 int				ft_printf(const char *format, ...);
 int				get_format(const char *format, int *i, t_format *arg_format);
 int				get_flags(const char *format, int *i, t_format *arg_format);
-int				get_mfw(const char *format, int *i, t_format *arg_format);
+int				get_mfw(const char *format, int *i, int start,
+	t_format *arg_format);
 int				get_precision(const char *format, int *i, t_format *arg_format);
 int				get_length(const char *format, int *i, t_format *arg_format);
 int				get_convers(const char *format, int *i, t_format *arg_format);

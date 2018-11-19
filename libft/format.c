@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 12:58:06 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/16 15:25:08 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/19 15:07:13 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		get_format(const char *format, int *i, t_format *arg_format)
 	if (get_flags(format, i, arg_format))
 		return (1);
 	if (arg_format->mfw == 0)
-		if (get_mfw(format, i, arg_format))
+		if (get_mfw(format, i, *i, arg_format))
 			return (1);
 	if (get_precision(format, i, arg_format))
 		return (1);
