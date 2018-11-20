@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_udecimal.c                                   :+:      :+:    :+:   */
+/*   print_uoctal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/19 15:07:59 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/19 15:08:13 by amoroziu         ###   ########.fr       */
+/*   Created: 2018/11/20 09:40:08 by amoroziu          #+#    #+#             */
+/*   Updated: 2018/11/20 10:58:19 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char						*uitoa(unsigned long long int nb)
+static char						*uoctal_itoa(unsigned long long int nb)
 {
-	int							size;
-	char						*res;
-	unsigned long long int		temp;
+	int						size;
+	char					*res;
+	unsigned long long int	temp;
 
 	size = (nb == 0);
 	temp = nb;
 	while (temp != 0)
 	{
-		temp /= 10;
+		temp /= 8;
 		size++;
 	}
 	MALLOCCHECK_NULL((res = ft_strnew(size)));
 	while (size >= 0)
 	{
-		res[--size] = nb % 10 + '0';
-		nb /= 10;
+		res[--size] = nb % 8 + '0';
+		nb /= 8;
 	}
 	return (res);
 }
@@ -47,10 +47,11 @@ static unsigned	long long int	get_arg(t_format arg_format, va_list args)
 	return ((long long int)va_arg(args, int));
 }
 
-static void						expand_str(char **str, char c, int add_to_left, int i)
+static void						expand_str(char **str, char c,
+	int add_to_left, int i)
 {
-	char	*temp;
-	char	*extra;
+	char					*temp;
+	char					*extra;
 
 	extra = ft_strnew(i);
 	extra = ft_memset((void*)extra, c, i);
@@ -65,7 +66,7 @@ static void						expand_str(char **str, char c, int add_to_left, int i)
 static int						generate_str(unsigned long long int nb,
 	t_format arg_format, char **output)
 {
-	*output = uitoa(nb);
+	*output = uoctal_itoa(nb);
 	if (ft_strlen(*output) < (size_t)arg_format.precision)
 		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)
@@ -82,7 +83,7 @@ static int						generate_str(unsigned long long int nb,
 	return (0);
 }
 
-int								print_udecimal(t_format arg_format,
+int								print_uoctal(t_format arg_format,
 	va_list args, int *count)
 {
 	unsigned long long int	nb;

@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 15:45:01 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/17 11:17:31 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/20 10:57:55 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void				check_sign(char **str, long long int nb,
 	char			*temp;
 
 	if (arg_format.flags)
-	{	
+	{
 		if (ft_strchr(arg_format.flags, ' '))
 		{
 			if (nb > 0)

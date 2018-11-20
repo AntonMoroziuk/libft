@@ -22,8 +22,8 @@ static int		print_arg(t_format arg_format, va_list args, int *count)
 	//	return (print_void(arg_format, args, count));
 	if (arg_format.conv == 'd' || arg_format.conv == 'i')
 		return (print_sdecimal(arg_format, args, count));
-	//if (arg_format.conv == 'o')
-	//	return (print_uoctal(arg_format, args, count));
+	if (arg_format.conv == 'o')
+		return (print_uoctal(arg_format, args, count));
 	if (arg_format.conv == 'u')
 		return (print_udecimal(arg_format, args, count));
 	//if (arg_format.conv == 'x' || arg_format.conv == 'X')
