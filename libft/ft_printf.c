@@ -26,8 +26,8 @@ static int		print_arg(t_format arg_format, va_list args, int *count)
 		return (print_uoctal(arg_format, args, count));
 	if (arg_format.conv == 'u')
 		return (print_udecimal(arg_format, args, count));
-	//if (arg_format.conv == 'x' || arg_format.conv == 'X')
-	//	return (print_uhex(arg_format, args, count));
+	if (arg_format.conv == 'x' || arg_format.conv == 'X')
+		return (print_uhex(arg_format, args, count));
 	//if (arg_format.conv == 'f')
 	//	return (print_float(arg_format, args, count));
 	return (1);
