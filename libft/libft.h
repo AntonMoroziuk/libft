@@ -10,10 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
+#ifndef LIBFT_H	
 # define LIBFT_H
 # define MALLOCCHECK_INT(x) if (!x) return (-1);
 # define MALLOCCHECK_NULL(x) if (!x) return (NULL);
+# define MAX(a,b) ((a)>(b) ? (a) : (b));
+# define MIN(a,b) ((a)<(b) ? (a) : (b));
 # include <string.h>
 # include <stdarg.h>
 # include "get_next_line.h"
@@ -92,6 +94,7 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstpushback(t_list **lst, t_list *new);
+char 			*ft_doubleitoa(double nb, int presicion);
 int				ft_printf(const char *format, ...);
 int				get_format(const char *format, int *i, t_format *arg_format);
 int				get_flags(const char *format, int *i, t_format *arg_format);
@@ -103,13 +106,11 @@ int				get_convers(const char *format, int *i, t_format *arg_format);
 int				check_format(t_format arg_format);
 int				print_char(t_format arg_format, va_list args, int *count);
 int				print_string(t_format arg_format, va_list args, int *count);
-int				print_void(t_format arg_format, va_list args, int *count);
+int				print_pointer(t_format arg_format, va_list args, int *count);
 int				print_sdecimal(t_format arg_format, va_list args, int *count);
 int				print_uoctal(t_format arg_format, va_list args, int *count);
 int				print_udecimal(t_format arg_format, va_list args, int *count);
 int				print_uhex(t_format arg_format, va_list args, int *count);
 int				print_float(t_format arg_format, va_list args, int *count);
-int				ft_max(int a, int b);
-int				ft_min(int a, int b);
 
 #endif

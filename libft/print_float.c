@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_sdecimal.c                                   :+:      :+:    :+:   */
+/*   print_float.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/16 15:45:01 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/20 10:57:55 by amoroziu         ###   ########.fr       */
+/*   Created: 2018/11/23 12:41:09 by amoroziu          #+#    #+#             */
+/*   Updated: 2018/11/23 12:41:11 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static long long int	get_arg(t_format arg_format, va_list args)
-{
-	if (arg_format.length == 'H')
-		return ((long long int)va_arg(args, int));
-	else if (arg_format.length == 'h')
-		return ((long long int)va_arg(args, int));
-	else if (arg_format.length == 'l')
-		return ((long long int)va_arg(args, long int));
-	else if (arg_format.length == 'L')
-		return ((long long int)va_arg(args, long long int));
-	return ((long long int)va_arg(args, int));
-}
-
-static void				check_sign(char **str, long long int nb,
+static void				check_sign(char **str, double nb,
 	t_format arg_format)
 {
 	char			*temp;
@@ -81,20 +68,21 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 	ft_strdel(&temp);
 }
 
-static int				generate_str(long long int nb, t_format arg_format,
+static int				generate_str(double nb, t_format arg_format,
 	char **output)
 {
-	*output = ft_itoa(nb);
+	if (nb < 0)
+		*output = ft_strjoin("-", ft_doubleitoa(-nb, arg_format.precision));
+	else
+		*output = ft_doubleitoa(nb, arg_format.precision);
 	check_sign(output, nb, arg_format);
-	if (ft_strlen(*output) < (size_t)arg_format.precision)
-		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)
 	{
 		if (!arg_format.flags)
 			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));
 		else if (ft_strchr(arg_format.flags, '-'))
 			expand_str(output, ' ', 0, arg_format.mfw - ft_strlen(*output));
-		else if (ft_strchr(arg_format.flags, '0') && arg_format.precision == 0)
+		else if (ft_strchr(arg_format.flags, '0'))
 			expand_str(output, '0', 1, arg_format.mfw - ft_strlen(*output));
 		else
 			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));
@@ -102,13 +90,15 @@ static int				generate_str(long long int nb, t_format arg_format,
 	return (0);
 }
 
-int						print_sdecimal(t_format arg_format,
+int						print_float(t_format arg_format,
 	va_list args, int *count)
 {
-	long long int	nb;
-	char			*output;
+	double	nb;
+	char	*output;
 
-	nb = get_arg(arg_format, args);
+	nb = va_arg(args, double);
+	if (arg_format.precision == -1)
+		arg_format.precision = 6;
 	if (generate_str(nb, arg_format, &output))
 		return (1);
 	ft_putstr(output);

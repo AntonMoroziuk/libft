@@ -74,7 +74,7 @@ static int						generate_str(unsigned long long int nb,
 			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));
 		else if (ft_strchr(arg_format.flags, '-'))
 			expand_str(output, ' ', 0, arg_format.mfw - ft_strlen(*output));
-		else if (ft_strchr(arg_format.flags, '0'))
+		else if (ft_strchr(arg_format.flags, '0') && arg_format.precision == 0)
 			expand_str(output, '0', 1, arg_format.mfw - ft_strlen(*output));
 		else
 			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));

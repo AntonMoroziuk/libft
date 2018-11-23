@@ -33,7 +33,7 @@ int				get_mfw(const char *format, int *i, int start,
 	j = 0;
 	while (ft_isdigit(format[start + j]))
 		j++;
-	arg_format->mfw = ft_max(pseudo_atoi(format, start), arg_format->mfw);
+	arg_format->mfw = MAX(pseudo_atoi(format, start), arg_format->mfw);
 	(*i) += j;
 	return (0);
 }
@@ -43,6 +43,7 @@ int				get_precision(const char *format, int *i, t_format *arg_format)
 	int		j;
 
 	j = 0;
+	//arg_format->precision = -1;
 	if (format[*i] == '.')
 	{
 		(*i)++;

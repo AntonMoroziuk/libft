@@ -76,9 +76,10 @@ static int						generate_str(unsigned long long int nb,
 	if (ft_strlen(*output) < (size_t)arg_format.precision)
 		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
 	if (ft_strlen(*output) < (size_t)arg_format.mfw &&
-		arg_format.flags && ft_strchr(arg_format.flags, '0'))
+		arg_format.flags && ft_strchr(arg_format.flags, '0')
+		&& arg_format.precision == 0)
 			expand_str(output, '0', 1, arg_format.mfw - ft_strlen(*output));
-	if (ft_strchr(arg_format.flags, '#'))
+	if (arg_format.flags && ft_strchr(arg_format.flags, '#'))
 	{
 		expand_str(output, letter, 1, 1);
 		expand_str(output, '0', 1, 1);

@@ -6,7 +6,7 @@
 #    By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/10 13:02:27 by amoroziu          #+#    #+#              #
-#    Updated: 2018/11/14 15:11:42 by amoroziu         ###   ########.fr        #
+#    Updated: 2018/11/23 12:08:20 by amoroziu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,9 +71,8 @@ SRC =	ft_bzero.c \
 		ft_lstiter.c \
 		ft_lstmap.c \
 		ft_lstpushback.c \
-		ft_max.c \
-		ft_min.c \
 		ft_printf.c \
+		ft_doubleitoa.c \
 		get_next_line.c \
 		conversation.c \
 		flag.c \
@@ -83,7 +82,11 @@ SRC =	ft_bzero.c \
 		print_sdecimal.c \
 		print_udecimal.c \
 		print_uoctal.c \
-		print_uhex.c
+		print_uhex.c \
+		print_char.c \
+		print_string.c \
+		print_pointer.c \
+		print_float.c
 
 FLAGC = -Wall -Wextra -Werror
 
@@ -104,3 +107,7 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+test: re clean
+	@gcc test.c libftprintf.a
+	@./a.out
