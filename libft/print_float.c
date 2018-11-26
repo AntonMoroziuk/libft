@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 12:41:09 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/23 12:41:11 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 13:54:26 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 	else
 		*str = ft_strjoin(*str, extra);
 	ft_strdel(&temp);
+	ft_strdel(&extra);
 }
 
 static int				generate_str(double nb, t_format arg_format,
@@ -76,6 +77,9 @@ static int				generate_str(double nb, t_format arg_format,
 	else
 		*output = ft_doubleitoa(nb, arg_format.precision);
 	check_sign(output, nb, arg_format);
+	if (arg_format.precision == 0 && arg_format.flags &&
+		ft_strchr(arg_format.flags, '#'))
+		expand_str(output, '.', 0, 1);
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)
 	{
 		if (!arg_format.flags)
@@ -97,11 +101,14 @@ int						print_float(t_format arg_format,
 	char	*output;
 
 	nb = va_arg(args, double);
+	if (check_if_null(nb, &arg_format, count))
+		return (0);
 	if (arg_format.precision == -1)
 		arg_format.precision = 6;
 	if (generate_str(nb, arg_format, &output))
 		return (1);
 	ft_putstr(output);
 	*count += ft_strlen(output);
+	ft_strdel(&output);
 	return (0);
 }

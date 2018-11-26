@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 15:07:59 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/19 15:08:13 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 13:53:57 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,18 @@ static char						*uitoa(unsigned long long int nb)
 static unsigned	long long int	get_arg(t_format arg_format, va_list args)
 {
 	if (arg_format.length == 'L')
-		return ((long long int)va_arg(args, unsigned long long int));
+		return ((unsigned long long int)va_arg(args, long long int));
 	else if (arg_format.length == 'l')
-		return ((long long int)va_arg(args, unsigned long int));
+		return ((unsigned long int)va_arg(args, long int));
 	else if (arg_format.length == 'h')
-		return ((long long int)va_arg(args, unsigned int));
+		return ((unsigned short int)va_arg(args, int));
 	else if (arg_format.length == 'H')
-		return ((long long int)va_arg(args, unsigned int));
-	return ((long long int)va_arg(args, int));
+		return ((unsigned char)va_arg(args, int));
+	return ((unsigned int)va_arg(args, int));
 }
 
-static void						expand_str(char **str, char c, int add_to_left, int i)
+static void						expand_str(char **str, char c, int add_to_left,
+		int i)
 {
 	char	*temp;
 	char	*extra;
@@ -60,6 +61,7 @@ static void						expand_str(char **str, char c, int add_to_left, int i)
 	else
 		*str = ft_strjoin(*str, extra);
 	ft_strdel(&temp);
+	ft_strdel(&extra);
 }
 
 static int						generate_str(unsigned long long int nb,
@@ -89,9 +91,14 @@ int								print_udecimal(t_format arg_format,
 	char					*output;
 
 	nb = get_arg(arg_format, args);
+	if (check_if_null(nb, &arg_format, count))
+		return (0);
+	if (arg_format.precision == -1)
+		arg_format.precision = 0;
 	if (generate_str(nb, arg_format, &output))
 		return (1);
 	ft_putstr(output);
 	*count += ft_strlen(output);
+	ft_strdel(&output);
 	return (0);
 }

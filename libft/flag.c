@@ -31,24 +31,24 @@ int		flag_repeats(char *str)
 int		get_flags(const char *format, int *i, t_format *arg_format)
 {
 	int		j;
+	int		k;
 
 	j = 0;
+	k = -1;
 	while (is_flag(format[*i + j]))
 	{
 		if (format[*i + j] == '-' || format[*i + j] == '0')
 		{
-			arg_format->flags[j] = format[*i + j];
+			arg_format->flags[++k] = format[*i + j];
 			if (get_mfw(format, i, *i + j + 1, arg_format))
 				return (1);
 		}
-		else if (j < 5)
-			arg_format->flags[j] = format[*i + j];
-		else
-			return (1);
+		if (!ft_strchr(arg_format->flags, format[*i + j]))
+			arg_format->flags[++k] = format[*i + j];
 		j++;
 	}
 	if (j == 0)
-		arg_format->flags = NULL;
+		ft_strdel(&arg_format->flags);
 	else if (flag_repeats(arg_format->flags))
 		return (1);
 	*i += j;

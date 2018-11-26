@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 11:49:49 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/19 15:07:03 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 16:09:52 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,28 @@ static int		print_arg(t_format arg_format, va_list args, int *count)
 		return (print_uhex(arg_format, args, count));
 	if (arg_format.conv == 'f')
 		return (print_float(arg_format, args, count));
+	if (arg_format.conv == '%')
+		return (print_percent(arg_format, count));
 	return (1);
 }
 
-static int		prepare_arg(va_list args, const char *format, int *i, int *count)
+static int		prepare_arg(va_list args, const char *format, int *i,
+		int *count)
 {
 	t_format	arg_format;
 
-	if (format[*i] == '%' && format[*i + 1] == '%')
-	{
-		ft_putchar('%');
-		(*i) += 2;
-		(*count)++;
-		return (0);
-	}
 	(*i)++;
 	if ((get_format(format, i, &arg_format)))
 		return (1);
-	return (print_arg(arg_format, args, count));
+	if (print_arg(arg_format, args, count))
+	{
+		if (arg_format.flags)
+			ft_strdel(&(arg_format.flags));
+		return (1);
+	}
+	if (arg_format.flags)
+		ft_strdel(&(arg_format.flags));
+	return (0);
 }
 
 int				ft_printf(const char *format, ...)
@@ -66,10 +70,9 @@ int				ft_printf(const char *format, ...)
 			ft_putchar(format[i]);
 			count++;
 		}
-		else 
+		else
 		{
-			if (prepare_arg(args, format, &i, &count))
-				return (-1);
+			prepare_arg(args, format, &i, &count);
 			i--;
 		}
 	}

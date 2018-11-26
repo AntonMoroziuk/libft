@@ -15,14 +15,14 @@
 static int		isconversation(char c)
 {
 	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
-			c == 'o' || c == 'u' || c == 'x' || c == 'X' || c == 'f');
+			c == 'o' || c == 'u' || c == 'x' || c == 'X' || c == 'f'
+			|| c == '%');
 }
 
 int				get_convers(const char *format, int *i, t_format *arg_format)
 {
-	if (!isconversation(format[*i]))
-		return (1);
 	arg_format->conv = format[*i];
-	(*i)++;
+	if (isconversation(format[*i]))
+		(*i)++;
 	return (0);
 }

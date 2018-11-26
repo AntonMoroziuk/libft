@@ -37,14 +37,14 @@ static char						*uoctal_itoa(unsigned long long int nb)
 static unsigned	long long int	get_arg(t_format arg_format, va_list args)
 {
 	if (arg_format.length == 'L')
-		return ((long long int)va_arg(args, unsigned long long int));
+		return ((unsigned long long int)va_arg(args, long long int));
 	else if (arg_format.length == 'l')
-		return ((long long int)va_arg(args, unsigned long int));
+		return ((unsigned long int)va_arg(args, long int));
 	else if (arg_format.length == 'h')
-		return ((long long int)va_arg(args, unsigned int));
+		return ((unsigned short int)va_arg(args, int));
 	else if (arg_format.length == 'H')
-		return ((long long int)va_arg(args, unsigned int));
-	return ((long long int)va_arg(args, int));
+		return ((unsigned char)va_arg(args, int));
+	return ((unsigned int)va_arg(args, int));
 }
 
 static void						expand_str(char **str, char c,
@@ -60,14 +60,21 @@ static void						expand_str(char **str, char c,
 		*str = ft_strjoin(extra, *str);
 	else
 		*str = ft_strjoin(*str, extra);
+	ft_strdel(&extra);
 	ft_strdel(&temp);
 }
 
 static int						generate_str(unsigned long long int nb,
 	t_format arg_format, char **output)
 {
-	*output = uoctal_itoa(nb);
-	if (ft_strchr(arg_format.flags, '#'))
+	if (nb == 0 && arg_format.precision == 0)
+		*output = ft_strnew(0);
+	else
+		*output = uoctal_itoa(nb);
+	if (arg_format.precision == -1)
+		arg_format.precision = 0;
+	if (arg_format.flags && ft_strchr(arg_format.flags, '#')
+		&& (*output)[0] != '0')
 		expand_str(output, '0', 1, 1);
 	if (ft_strlen(*output) < (size_t)arg_format.precision)
 		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
@@ -96,5 +103,6 @@ int								print_uoctal(t_format arg_format,
 		return (1);
 	ft_putstr(output);
 	*count += ft_strlen(output);
+	ft_strdel(&output);
 	return (0);
 }

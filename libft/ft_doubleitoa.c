@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:02:19 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/23 13:02:20 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 14:03:20 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,17 @@ static char	*get_addigits(double *nb, int precision)
 
 	MALLOCCHECK_NULL((res = ft_strnew(precision + 1)));
 	i = -1;
-	res[++i] = '.';
-	while (++i <= precision)
+	if (precision > 0)
 	{
-		*nb *= 10;
-		res[i] = (int)(*nb) + '0';
-		*nb -= (int)(*nb);
+		res[++i] = '.';
+		if (*nb > 1)
+			*nb = *nb - (long long int)(*nb);
+		while (++i <= precision)
+		{
+			*nb *= 10;
+			res[i] = (int)(*nb) + '0';
+			*nb -= (int)(*nb);
+		}
 	}
 	return (res);
 }
@@ -63,8 +68,9 @@ static char	*get_addigits(double *nb, int precision)
 char		*ft_doubleitoa(double nb, int precision)
 {
 	if (nb < 9223372036854775807)
-		return (ft_strjoin(ft_itoa((long long)nb),
-			get_addigits(&nb, precision)));
-	return (ft_strjoin(get_bddigits(&nb),
-		get_addigits(&nb, precision)));
+	{
+		return (ft_strjoin(ft_itoa((long long int)nb),
+					get_addigits(&nb, precision)));
+	}
+	return (ft_strjoin(get_bddigits(&nb), get_addigits(&nb, precision)));
 }

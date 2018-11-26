@@ -6,7 +6,7 @@
 #    By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/10 13:02:27 by amoroziu          #+#    #+#              #
-#    Updated: 2018/11/23 12:08:20 by amoroziu         ###   ########.fr        #
+#    Updated: 2018/11/26 15:35:21 by amoroziu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ SRC =	ft_bzero.c \
 		format.c \
 		length.c \
 		mfw.c \
+		check_if_null.c \
 		print_sdecimal.c \
 		print_udecimal.c \
 		print_uoctal.c \
@@ -86,7 +87,8 @@ SRC =	ft_bzero.c \
 		print_char.c \
 		print_string.c \
 		print_pointer.c \
-		print_float.c
+		print_float.c \
+		print_percent.c
 
 FLAGC = -Wall -Wextra -Werror
 

@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 11:57:46 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/20 11:57:48 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 13:57:01 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void						expand_str(char **str, char c,
 	else
 		*str = ft_strjoin(*str, extra);
 	ft_strdel(&temp);
+	ft_strdel(&extra);
 }
 
 static int						generate_str(unsigned char nb,
@@ -33,18 +34,16 @@ static int						generate_str(unsigned char nb,
 {
 	MALLOCCHECK_INT((*output = ft_strnew(2)));
 	(*output)[0] = (char)nb;
-	if (ft_strlen(*output) < (size_t)arg_format.precision)
-		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
-	if (ft_strlen(*output) < (size_t)arg_format.mfw)
+	if (1 < (size_t)arg_format.mfw)
 	{
 		if (!arg_format.flags)
-			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));
+			expand_str(output, ' ', 1, arg_format.mfw - 1);
 		else if (ft_strchr(arg_format.flags, '-'))
-			expand_str(output, ' ', 0, arg_format.mfw - ft_strlen(*output));
+			expand_str(output, ' ', 0, arg_format.mfw - 1);
 		else if (ft_strchr(arg_format.flags, '0'))
-			expand_str(output, '0', 1, arg_format.mfw - ft_strlen(*output));
+			expand_str(output, '0', 1, arg_format.mfw - 1);
 		else
-			expand_str(output, ' ', 1, arg_format.mfw - ft_strlen(*output));
+			expand_str(output, ' ', 1, arg_format.mfw - 1);
 	}
 	return (0);
 }
@@ -56,9 +55,23 @@ int								print_char(t_format arg_format,
 	char					*output;
 
 	nb = (unsigned char)va_arg(args, int);
+	if (check_if_null(nb, &arg_format, count))
+		return (0);
+	if (arg_format.precision == -1)
+		arg_format.precision = 0;
 	if (generate_str(nb, arg_format, &output))
 		return (1);
-	ft_putstr(output);
-	*count += ft_strlen(output);
+	if (nb == 0)
+	{
+		ft_putstr(output);
+		ft_putchar(0);
+		ft_putstr(ft_strchr(output, '\0'));
+		*count += ft_strlen(output) + ft_strlen(ft_strchr(output, '\0')) + 1;
+	}
+	else
+	{
+		ft_putstr(output);
+		*count += ft_strlen(output);
+	}
 	return (0);
 }

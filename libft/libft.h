@@ -6,11 +6,11 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 15:39:02 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/16 15:40:48 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 13:56:20 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H	
+#ifndef LIBFT_H
 # define LIBFT_H
 # define MALLOCCHECK_INT(x) if (!x) return (-1);
 # define MALLOCCHECK_NULL(x) if (!x) return (NULL);
@@ -94,7 +94,7 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstpushback(t_list **lst, t_list *new);
-char 			*ft_doubleitoa(double nb, int presicion);
+char			*ft_doubleitoa(double nb, int presicion);
 int				ft_printf(const char *format, ...);
 int				get_format(const char *format, int *i, t_format *arg_format);
 int				get_flags(const char *format, int *i, t_format *arg_format);
@@ -104,6 +104,8 @@ int				get_precision(const char *format, int *i, t_format *arg_format);
 int				get_length(const char *format, int *i, t_format *arg_format);
 int				get_convers(const char *format, int *i, t_format *arg_format);
 int				check_format(t_format arg_format);
+int				check_if_null(unsigned long long int nb, t_format *arg_format,
+	int *count);
 int				print_char(t_format arg_format, va_list args, int *count);
 int				print_string(t_format arg_format, va_list args, int *count);
 int				print_pointer(t_format arg_format, va_list args, int *count);
@@ -112,5 +114,6 @@ int				print_uoctal(t_format arg_format, va_list args, int *count);
 int				print_udecimal(t_format arg_format, va_list args, int *count);
 int				print_uhex(t_format arg_format, va_list args, int *count);
 int				print_float(t_format arg_format, va_list args, int *count);
+int				print_percent(t_format arg_format, int *count);
 
 #endif

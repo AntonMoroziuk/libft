@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 15:45:01 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/20 10:57:55 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/26 16:08:57 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 static long long int	get_arg(t_format arg_format, va_list args)
 {
 	if (arg_format.length == 'H')
-		return ((long long int)va_arg(args, int));
+		return ((char)va_arg(args, int));
 	else if (arg_format.length == 'h')
-		return ((long long int)va_arg(args, int));
+		return ((short int)va_arg(args, int));
 	else if (arg_format.length == 'l')
-		return ((long long int)va_arg(args, long int));
+		return ((long int)va_arg(args, long int));
 	else if (arg_format.length == 'L')
 		return ((long long int)va_arg(args, long long int));
-	return ((long long int)va_arg(args, int));
+	return ((int)va_arg(args, int));
 }
 
 static void				check_sign(char **str, long long int nb,
@@ -32,21 +32,21 @@ static void				check_sign(char **str, long long int nb,
 
 	if (arg_format.flags)
 	{
-		if (ft_strchr(arg_format.flags, ' '))
-		{
-			if (nb > 0)
-			{
-				temp = *str;
-				*str = ft_strjoin(" ", *str);
-				ft_strdel(&temp);
-			}
-		}
 		if (ft_strchr(arg_format.flags, '+'))
 		{
-			if (nb > 0)
+			if (nb >= 0)
 			{
 				temp = *str;
 				*str = ft_strjoin("+", *str);
+				ft_strdel(&temp);
+			}
+		}
+		else if (ft_strchr(arg_format.flags, ' '))
+		{
+			if (nb >= 0)
+			{
+				temp = *str;
+				*str = ft_strjoin(" ", *str);
 				ft_strdel(&temp);
 			}
 		}
@@ -71,14 +71,15 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 			ft_strdel(&temp);
 			temp = *str;
 			*str = ft_strjoin(sign, *str);
-			ft_strdel(&temp);
 		}
 		else
 			*str = ft_strjoin(extra, *str);
+		ft_strdel(&sign);
 	}
 	else
 		*str = ft_strjoin(*str, extra);
 	ft_strdel(&temp);
+	ft_strdel(&extra);
 }
 
 static int				generate_str(long long int nb, t_format arg_format,
@@ -86,8 +87,10 @@ static int				generate_str(long long int nb, t_format arg_format,
 {
 	*output = ft_itoa(nb);
 	check_sign(output, nb, arg_format);
-	if (ft_strlen(*output) < (size_t)arg_format.precision)
-		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
+	if (ft_strlen(*output) - !ft_isdigit((*output)[0])
+		< (size_t)arg_format.precision)
+		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output)
+			+ !ft_isdigit((*output)[0]));
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)
 	{
 		if (!arg_format.flags)
@@ -109,9 +112,14 @@ int						print_sdecimal(t_format arg_format,
 	char			*output;
 
 	nb = get_arg(arg_format, args);
+	if (check_if_null(nb, &arg_format, count))
+		return (0);
+	if (arg_format.precision == -1)
+		arg_format.precision = 0;
 	if (generate_str(nb, arg_format, &output))
 		return (1);
 	ft_putstr(output);
 	*count += ft_strlen(output);
+	ft_strdel(&output);
 	return (0);
 }
