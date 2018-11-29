@@ -12,12 +12,11 @@
 
 #include "libft.h"
 
-static char						*uhex_itoa(unsigned long long int nb,
-	char first_letter)
+static void						uhex_itoa(unsigned long long int nb,
+	char first_letter, char **res)
 {
 	int						size;
 	int						i;
-	char					*res;
 	unsigned long long int	temp;
 
 	size = (nb == 0);
@@ -27,17 +26,19 @@ static char						*uhex_itoa(unsigned long long int nb,
 		temp /= 16;
 		size++;
 	}
-	MALLOCCHECK_NULL((res = ft_strnew(size)));
-	while (size >= 0)
+	*res = ft_strnew(size);
+	if (*res)
 	{
-		i = nb % 16;
-		if (i < 10)
-			res[--size] = i + '0';
-		else
-			res[--size] = i - 10 + first_letter;
-		nb /= 16;
+		while (size >= 0)
+		{
+			i = nb % 16;
+			if (i < 10)
+				(*res)[--size] = (char)(i + '0');
+			else
+				(*res)[--size] = (char)(i - 10 + first_letter);
+			nb /= 16;
+		}
 	}
-	return (res);
 }
 
 static unsigned	long long int	get_arg(t_format arg_format, va_list args)
@@ -73,12 +74,12 @@ static void						expand_str(char **str, char c,
 static int						generate_str(unsigned long long int nb,
 	t_format arg_format, char **output, char letter)
 {
-	*output = uhex_itoa(nb, letter - 23);
+	uhex_itoa(nb, letter - 23, output);
 	if (ft_strlen(*output) < (size_t)arg_format.precision)
 		expand_str(output, '0', 1, arg_format.precision - ft_strlen(*output));
-	if (ft_strlen(*output) < (size_t)arg_format.mfw &&
-		arg_format.flags && ft_strchr(arg_format.flags, '0')
-		&& arg_format.precision == 0 && !ft_strchr(arg_format.flags, '-'))
+	if (arg_format.flags && ft_strlen(*output) - (ft_strchr(arg_format.flags,
+		'#') != 0) * 2 < (size_t)arg_format.mfw && ft_strchr(arg_format.flags,
+		'0') && arg_format.precision == 0 && !ft_strchr(arg_format.flags, '-'))
 		expand_str(output, '0', 1, arg_format.mfw - ft_strlen(*output)
 			- (ft_strchr(arg_format.flags, '#') != 0) * 2);
 	if (arg_format.flags && ft_strchr(arg_format.flags, '#') && nb != 0)

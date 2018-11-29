@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 13:33:39 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/16 15:27:45 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/11/29 16:52:40 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,6 @@
 int		is_flag(char c)
 {
 	return (c == '#' || c == '0' || c == '-' || c == '+' || c == ' ');
-}
-
-int		flag_repeats(char *str)
-{
-	if (ft_strrchr(str, '#') != ft_strchr(str, '#') ||
-		ft_strrchr(str, '0') != ft_strchr(str, '0') ||
-		ft_strrchr(str, '-') != ft_strchr(str, '-') ||
-		ft_strrchr(str, '+') != ft_strchr(str, '+') ||
-		ft_strrchr(str, ' ') != ft_strchr(str, ' '))
-		return (1);
-	return (0);
 }
 
 int		get_flags(const char *format, int *i, t_format *arg_format)
@@ -48,9 +37,7 @@ int		get_flags(const char *format, int *i, t_format *arg_format)
 		j++;
 	}
 	if (j == 0)
-		ft_strdel(&arg_format->flags);
-	else if (flag_repeats(arg_format->flags))
-		return (1);
+		arg_format->flags[0] = '\0';
 	*i += j;
 	return (0);
 }

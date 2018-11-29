@@ -19,21 +19,21 @@ static void				check_sign(char **str, double nb,
 
 	if (arg_format.flags)
 	{
-		if (ft_strchr(arg_format.flags, ' '))
-		{
-			if (nb > 0)
-			{
-				temp = *str;
-				*str = ft_strjoin(" ", *str);
-				ft_strdel(&temp);
-			}
-		}
 		if (ft_strchr(arg_format.flags, '+'))
 		{
 			if (nb > 0)
 			{
 				temp = *str;
 				*str = ft_strjoin("+", *str);
+				ft_strdel(&temp);
+			}
+		}
+		else if (ft_strchr(arg_format.flags, ' '))
+		{
+			if (nb > 0)
+			{
+				temp = *str;
+				*str = ft_strjoin(" ", *str);
 				ft_strdel(&temp);
 			}
 		}
@@ -58,10 +58,10 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 			ft_strdel(&temp);
 			temp = *str;
 			*str = ft_strjoin(sign, *str);
-			ft_strdel(&temp);
 		}
 		else
 			*str = ft_strjoin(extra, *str);
+		ft_strdel(&sign);
 	}
 	else
 		*str = ft_strjoin(*str, extra);

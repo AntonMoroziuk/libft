@@ -67,7 +67,7 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 		sign = ft_strsub(*str, 0, 1);
 		if (!ft_isdigit(sign[0]) && c == '0')
 		{
-			*str = ft_strjoin(extra, ft_strsub(*str, 1, ft_strlen(*str) - 1));
+			*str = ft_strjoin(extra, *str + 1);
 			ft_strdel(&temp);
 			temp = *str;
 			*str = ft_strjoin(sign, *str);

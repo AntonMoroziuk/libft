@@ -15,7 +15,7 @@
 int		print_pointer(t_format arg_format, va_list args, int *count)
 {
 	if (arg_format.flags)
-		ft_strdel(&arg_format.flags);
+		arg_format.flags[0] = '\0';
 	arg_format.length = 'l';
 	arg_format.conv = 'x';
 	ft_putstr("0x");

@@ -73,5 +73,6 @@ int								print_char(t_format arg_format,
 		ft_putstr(output);
 		*count += ft_strlen(output);
 	}
+	free(output);
 	return (0);
 }

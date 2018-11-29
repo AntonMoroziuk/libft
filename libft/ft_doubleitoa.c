@@ -67,10 +67,23 @@ static char	*get_addigits(double *nb, int precision)
 
 char		*ft_doubleitoa(double nb, int precision)
 {
+	char	*part1;
+	char	*part2;
+	char	*res;
+
 	if (nb < 9223372036854775807)
 	{
-		return (ft_strjoin(ft_itoa((long long int)nb),
-					get_addigits(&nb, precision)));
+		part1 = ft_itoa((long long int)nb);
+		part2 = get_addigits(&nb, precision);
+		res = ft_strjoin(part1, part2);
+		ft_strdel(&part1);
+		ft_strdel(&part2);
+		return (res);
 	}
-	return (ft_strjoin(get_bddigits(&nb), get_addigits(&nb, precision)));
+	part1 = get_bddigits(&nb);
+	part2 = get_addigits(&nb, precision);
+	res = ft_strjoin(part1, part2);
+	ft_strdel(&part1);
+	ft_strdel(&part2);
+	return (res);
 }
