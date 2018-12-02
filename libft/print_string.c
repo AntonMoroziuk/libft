@@ -6,7 +6,7 @@
 /*   By: amoroziu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 14:09:28 by amoroziu          #+#    #+#             */
-/*   Updated: 2018/11/29 17:29:31 by amoroziu         ###   ########.fr       */
+/*   Updated: 2018/12/01 12:43:32 by amoroziu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@ static void				expand_str(char **str, char c, int add_to_left, int i)
 	ft_strdel(&temp);
 }
 
-static int				generate_str(t_format arg_format, char **output,
-	int *free)
+static int				generate_str(t_format arg_format, char **output)
 {
+	char	*temp;
+
 	if (ft_strlen(*output) > (size_t)arg_format.precision)
 	{
+		temp = *output;
 		*output = ft_strsub(*output, 0, (size_t)arg_format.precision);
-		*free = 1;
+		ft_strdel(&temp);
 	}
 	if (ft_strlen(*output) < (size_t)arg_format.mfw)
 	{
@@ -54,19 +56,16 @@ int						print_string(t_format arg_format,
 	va_list args, int *count)
 {
 	char			*output;
-	int				free;
 
-	output = va_arg(args, char *);
-	free = 0;
+	output = ft_strdup(va_arg(args, char *));
 	if (!output)
 		output = ft_strdup("(null)");
 	if (arg_format.precision == -1)
 		arg_format.precision = ft_strlen(output);
-	if (generate_str(arg_format, &output, &free))
+	if (generate_str(arg_format, &output))
 		return (1);
 	ft_putstr(output);
 	*count += ft_strlen(output);
-	if (free)
-		ft_strdel(&output);
+	ft_strdel(&output);
 	return (0);
 }
